@@ -7,7 +7,228 @@ datasource db {
   provider = "postgresql"
 }
 
+enum DeliveryStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
+
 model User {
-  id   String @id
-  name String @db.VarChar(40)
+  id            String    @id
+  name          String    @db.VarChar(40)
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          UserRole  @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  customer      Customer?
+
+  @@unique([email])
+  @@map("user")
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+model Customer {
+  id               String            @id @default(cuid())
+  user_id          String            @unique
+  user             User              @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  phone_number     String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  isActive         Boolean           @default(true)
+  address          Address[]
+  customer_reviews CustomerReviews[]
+  cart             Cart?
+  order            Order[]
+
+  @@map("customers")
+}
+
+model Address {
+  id          String   @id @default(cuid())
+  customer_id String
+  customer    Customer @relation(fields: [customer_id], references: [id])
+  country     String
+  state       String
+  city        String
+  street      String
+  postal_code String?
+  is_default  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  order Order[]
+
+  @@map("address")
+}
+
+model Categorie {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id               String            @id @default(cuid())
+  name             String
+  description      String?
+  category_id      String
+  categorie        Categorie         @relation(fields: [category_id], references: [id])
+  price            Decimal           @db.Decimal(10, 2)
+  slug             String            @unique
+  img              String
+  discount_percent Decimal?          @db.Decimal(5, 2)
+  brand            String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  customer_review  CustomerReviews[]
+  inventory        Inventory?
+  cart_item        CartItem[]
+  order_item       OrderItem[]
+
+  @@map("products")
+}
+
+model CustomerReviews {
+  id          String   @id @default(cuid())
+  customer_id String
+  customer    Customer @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  product_id  String
+  product     Product  @relation(fields: [product_id], references: [id])
+  rating      Int
+  review      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([customer_id, product_id])
+  @@map("customer_reviews")
+}
+
+model Inventory {
+  id         String   @id @default(cuid())
+  product_id String   @unique
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  quantity   Int      @default(0)
+  updatedAt  DateTime @updatedAt
+
+  @@map("inventories")
+}
+
+model Cart {
+  id          String     @id @default(cuid())
+  customer_id String     @unique
+  customer    Customer   @relation(fields: [customer_id], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  cart_item   CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id         String   @id @default(cuid())
+  cart_id    String
+  cart       Cart     @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  product_id String
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  quantity   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([cart_id, product_id])
+  @@map("cart_items")
+}
+
+model Order {
+  id          String         @id @default(cuid())
+  customer_id String
+  customer    Customer       @relation(fields: [customer_id], references: [id])
+  address_id  String
+  address     Address        @relation(fields: [address_id], references: [id])
+  status      DeliveryStatus @default(PENDING)
+  total_price Decimal        @db.Decimal(10, 2)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  order_item  OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  order_id   String
+  order      Order   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id])
+
+  quantity   Int
+  unit_price Decimal  @db.Decimal(10, 2)
+  createdAt  DateTime @default(now())
+
+  @@map("order_items")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
