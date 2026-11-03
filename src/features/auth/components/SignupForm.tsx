@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema, type SignupSchemaType } from "../schemas/auth";
 import { useState } from "react";
+import Link from "next/link";
 const SignupForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<SignupSchemaType>({
@@ -114,6 +115,10 @@ const SignupForm = () => {
         <p className="m-0 text-red-600">{errors?.root.message}</p>
       )}
       {success && <p className="m-0 text-green-600">{success}</p>}
+      <br />
+      <Link href="/signin">
+        <p className="text-center">Have an account?</p>
+      </Link>
     </section>
   );
 };

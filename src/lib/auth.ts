@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { createAuthMiddleware, APIError } from "better-auth/api";
-import { SignupSchema } from "@/features/auth/schemas/auth";
+import { LoginSchema, SignupSchema } from "@/features/auth/schemas/auth";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -24,24 +24,43 @@ export const auth = betterAuth({
   },
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== "/sign-up/email") {
-        return;
-      }
-      const validation = SignupSchema.safeParse(ctx.body);
-      if (!validation.success) {
-        throw new APIError("BAD_REQUEST", {
-          message: validation.error.issues[0]?.message ?? "Invalid credentials",
-        });
-      }
-      return {
-        context: {
-          ...ctx,
-          body: {
-            ...ctx.body,
-            ...validation.data,
+      if (ctx.path === "/sign-up/email") {
+        const validation = SignupSchema.safeParse(ctx.body);
+        if (!validation.success) {
+          throw new APIError("BAD_REQUEST", {
+            message:
+              validation.error.issues[0]?.message ?? "Invalid credentials",
+          });
+        }
+        return {
+          context: {
+            ...ctx,
+            body: {
+              ...ctx.body,
+              ...validation.data,
+            },
           },
-        },
-      };
+        };
+      }
+
+      if (ctx.path === "/sign-in/email") {
+        const validation = LoginSchema.safeParse(ctx.body);
+        if (!validation.success) {
+          throw new APIError("BAD_REQUEST", {
+            message:
+              validation.error.issues[0]?.message ?? "Invalid signup data",
+          });
+        }
+        return {
+          context: {
+            ...ctx,
+            body: {
+              ...ctx.body,
+              ...validation.data,
+            },
+          },
+        };
+      }
     }),
   },
   databaseHooks: {
