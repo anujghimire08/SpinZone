@@ -1,3 +1,4 @@
+import SignoutButton from "@/features/auth/components/SignoutButton";
 import { requireAuth } from "@/lib/auth-guard";
 
 const Account = async () => {
@@ -8,6 +9,7 @@ const Account = async () => {
       {session.user.name}
       {session.user.email}
       <br />
+      <SignoutButton />
     </div>
   );
 };
