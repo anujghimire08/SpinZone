@@ -1,4 +1,5 @@
 import ActiveSessions from "@/features/account/components/ActiveSessions";
+import ChangePasswordForm from "@/features/auth/components/ChangePasswordForm";
 
 const SecurityPage = () => {
   return (
@@ -21,10 +22,7 @@ const SecurityPage = () => {
         </div>
 
         <div className="rounded-lg border border-dashed p-4">
-          <p className="font-medium">Change password</p>
-          <p className="text-sm text-muted-foreground">
-            Update your password to keep your account secure.
-          </p>
+          <ChangePasswordForm />
         </div>
       </section>
 
