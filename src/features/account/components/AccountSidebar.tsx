@@ -21,8 +21,8 @@ const navigation = [
     title: "SECURITY",
     items: [
       {
-        label: "Security",
-        href: "/account/security",
+        label: "Sessions",
+        href: "/account/sessions",
       },
     ],
   },
