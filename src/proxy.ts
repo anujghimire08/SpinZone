@@ -12,6 +12,7 @@ export async function proxy(request: NextRequest) {
   const session = await auth.api.getSession({
     headers: request.headers,
   });
+  console.log(session);
 
   const isLoggedIn = !!session;
   const isApiAuthRoute = pathname.startsWith(ApiAuthPrefix);
