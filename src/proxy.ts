@@ -9,12 +9,7 @@ import {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
-  console.log(session);
 
-  const isLoggedIn = !!session;
   const isApiAuthRoute = pathname.startsWith(ApiAuthPrefix);
   const isAuthRoute = AuthRoutes.includes(pathname);
   const isPublicRoute = PublicRoutes.includes(pathname);
@@ -25,6 +20,11 @@ export async function proxy(request: NextRequest) {
   if (isPublicRoute) {
     return NextResponse.next();
   }
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
+  const isLoggedIn = !!session;
 
   if (isAuthRoute) {
     if (isLoggedIn) {

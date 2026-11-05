@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm";
+import ResetPasswordForm from "@/features/account/components/ResetPasswordForm";
 
 interface ResetPasswordPageProps {
   searchParams: Promise<{

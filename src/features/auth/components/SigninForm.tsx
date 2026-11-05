@@ -124,6 +124,10 @@ const SigninForm = () => {
       >
         {isSubmitting ? "Signing in..." : "Sign in"}
       </button>
+      <Link href="/forgot-password">
+        <p className="text-center">Forgot password?</p>
+      </Link>
+      <br />
       <Link href="/signup">
         <p className="text-center">Don&apos;t have account?</p>
       </Link>

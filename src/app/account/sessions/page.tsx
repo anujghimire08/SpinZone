@@ -1,5 +1,5 @@
 import ActiveSessions from "@/features/account/components/ActiveSessions";
-import ChangePasswordForm from "@/features/auth/components/ChangePasswordForm";
+import ChangePasswordForm from "@/features/account/components/ChangePasswordForm";
 import Link from "next/link";
 
 const SessionPage = () => {

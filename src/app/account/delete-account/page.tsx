@@ -1,4 +1,4 @@
-import DeleteAccountForm from "@/features/auth/components/DeleteAccountForm";
+import DeleteAccountForm from "@/features/account/components/DeleteAccountForm";
 
 const DeleteAccountPage = () => {
   return (

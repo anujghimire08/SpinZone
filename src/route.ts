@@ -1,7 +1,7 @@
 /**
  * Routes accessible without authentication.
  */
-export const PublicRoutes = ["/", "/forgot-password"];
+export const PublicRoutes = ["/", "/forgot-password", "/reset-password"];
 
 /**
  * Authentication-related pages.
