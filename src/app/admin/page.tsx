@@ -1,5 +1,3 @@
-import { requireAdmin } from "@/lib/role-guard";
-
 const AdminPage = async () => {
   return (
     <main className="p-8">

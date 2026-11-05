@@ -96,6 +96,7 @@ model Product {
   img              String
   discount_percent Decimal?          @db.Decimal(5, 2)
   brand            String
+  isActive         Boolean           @default(true)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   customer_review  CustomerReviews[]

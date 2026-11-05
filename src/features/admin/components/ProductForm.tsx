@@ -2,39 +2,45 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { updateProduct } from "../actions/update-product";
 import {
   CreateProductSchema,
   CreateProductSchemaType,
 } from "@/features/admin/schemas/product";
 import { useState } from "react";
-import { createProduct } from "../actions/create-product";
+import { createProduct } from "@/features/admin/actions/create-product";
 
 interface ProductFormProps {
   categories: {
     id: string;
     name: string;
   }[];
+  initialData?: CreateProductSchemaType;
+  productId?: string;
 }
 
-const ProductForm = ({ categories }: ProductFormProps) => {
+const ProductForm = ({
+  categories,
+  initialData,
+  productId,
+}: ProductFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted },
-    setError,
-    clearErrors,
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<CreateProductSchemaType>({
     resolver: zodResolver(CreateProductSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      category_id: "",
-      price: 0,
-      slug: "",
-      img: "",
-      brand: "",
+      name: initialData?.name ?? "",
+      description: initialData?.description ?? "",
+      category_id: initialData?.category_id ?? "",
+      price: initialData?.price ?? 0,
+      slug: initialData?.slug ?? "",
+      img: initialData?.img ?? "",
+      discount_percent: initialData?.discount_percent ?? 0,
+      brand: initialData?.brand ?? "",
+      isActive: initialData?.isActive ?? true,
     },
   });
 
@@ -42,17 +48,26 @@ const ProductForm = ({ categories }: ProductFormProps) => {
 
   const onSubmit = async (data: CreateProductSchemaType) => {
     setServerMessage("");
-    clearErrors();
+
     try {
-      const result = await createProduct(data);
+      const result = productId
+        ? await updateProduct(productId, data)
+        : await createProduct(data);
+
       if (!result.success) {
         setServerMessage(result.error);
         return;
       }
 
-      setServerMessage("Product created successfully!");
+      setServerMessage(
+        productId
+          ? "Product updated successfully!"
+          : "Product created successfully!",
+      );
 
-      reset();
+      if (!productId) {
+        reset();
+      }
     } catch {
       setServerMessage("Something went wrong. Please try again.");
     }
@@ -127,6 +142,14 @@ const ProductForm = ({ categories }: ProductFormProps) => {
         <p className="text-sm text-red-500">{errors.slug?.message}</p>
       </div>
 
+      {productId && (
+        <div className="flex items-center gap-2">
+          <input id="isActive" type="checkbox" {...register("isActive")} />
+
+          <label htmlFor="isActive">Available (visible in storefront)</label>
+        </div>
+      )}
+
       <div>
         <label htmlFor="img">Image Path</label>
         <input
@@ -169,11 +192,15 @@ const ProductForm = ({ categories }: ProductFormProps) => {
       </div>
 
       <button
-        disabled={isSubmitted}
+        disabled={isSubmitting}
         type="submit"
         className="rounded-md bg-blue-600 px-5 py-2 text-white"
       >
-        {isSubmitted ? "Creating..." : "Create Product"}
+        {isSubmitting
+          ? "Saving..."
+          : productId
+            ? "Update Product"
+            : "Create Product"}
       </button>
       {serverMessage && <p>{serverMessage}</p>}
     </form>
