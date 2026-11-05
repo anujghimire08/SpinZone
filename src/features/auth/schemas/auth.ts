@@ -81,3 +81,9 @@ export const ResetPasswordSchema = z
   });
 
 export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
+
+export const DeleteAccountSchema = z.object({
+  password: z.string().min(1, "Password is required"),
+});
+
+export type DeleteAccountSchemaType = z.infer<typeof DeleteAccountSchema>;

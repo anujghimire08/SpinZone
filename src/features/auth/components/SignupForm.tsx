@@ -6,7 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema, type SignupSchemaType } from "../schemas/auth";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 const SignupForm = () => {
+  const router = useRouter();
   const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(SignupSchema),
@@ -41,6 +43,7 @@ const SignupForm = () => {
       }
       setSuccess("Account created successfully!");
       reset();
+      router.push("/signin");
     } catch {
       setError("root", {
         type: "manual",

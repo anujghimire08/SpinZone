@@ -12,6 +12,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: false,
     sendResetPassword: async ({ user, url }) => {
       const { error, data } = await resend.emails.send({
         from: "onboarding@resend.dev",
@@ -29,6 +30,7 @@ export const auth = betterAuth({
                 </div>
         `,
       });
+      // remove later
       if (error) {
         console.error("Resend error:", error);
         throw new Error(error.message);
@@ -49,6 +51,9 @@ export const auth = betterAuth({
         defaultValue: "CUSTOMER",
         input: false,
       },
+    },
+    deleteUser: {
+      enabled: true,
     },
   },
   hooks: {

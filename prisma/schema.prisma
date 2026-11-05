@@ -57,16 +57,16 @@ model Customer {
 }
 
 model Address {
-  id          String   @id @default(cuid())
-  customer_id String
-  customer    Customer @relation(fields: [customer_id], references: [id])
+  id          String    @id @default(cuid())
+  customer_id String?
+  customer    Customer? @relation(fields: [customer_id], references: [id], onDelete: SetNull)
   country     String
   state       String
   city        String
   street      String
   postal_code String?
-  is_default  Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  is_default  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
 
   order Order[]
 
@@ -158,8 +158,8 @@ model CartItem {
 
 model Order {
   id          String         @id @default(cuid())
-  customer_id String
-  customer    Customer       @relation(fields: [customer_id], references: [id])
+  customer_id String?
+  customer    Customer?      @relation(fields: [customer_id], references: [id], onDelete: SetNull)
   address_id  String
   address     Address        @relation(fields: [address_id], references: [id])
   status      DeliveryStatus @default(PENDING)
