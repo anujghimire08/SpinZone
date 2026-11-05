@@ -1,5 +1,5 @@
 import { type LoginSchemaType } from "@/features/auth/schemas/auth";
-import { authClient } from "@/features/auth/client/auth-client";
+import { authClient } from "@/features/auth-client";
 
 export const getLogin = async (values: LoginSchemaType) => {
   const { email, password } = values;

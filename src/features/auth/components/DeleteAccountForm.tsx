@@ -10,7 +10,7 @@ import {
   type DeleteAccountSchemaType,
 } from "@/features/auth/schemas/auth";
 
-import { deleteAccount } from "@/features/auth/client/delete-account";
+import { deleteAccount } from "@/features/account/client/delete-account";
 
 const DeleteAccountForm = () => {
   const [success, setSuccess] = useState("");

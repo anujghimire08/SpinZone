@@ -1,4 +1,4 @@
-import { authClient } from "@/features/auth/client/auth-client";
+import { authClient } from "@/features/auth-client";
 
 interface UpdateProfileProps {
   name: string;

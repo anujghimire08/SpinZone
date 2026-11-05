@@ -1,4 +1,4 @@
-import { authClient } from "@/features/auth/client/auth-client";
+import { authClient } from "@/features/auth-client";
 
 export const reauthenticate = async (email: string, password: string) => {
   const { data, error } = await authClient.signIn.email({

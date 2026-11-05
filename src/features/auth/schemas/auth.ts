@@ -87,3 +87,13 @@ export const DeleteAccountSchema = z.object({
 });
 
 export type DeleteAccountSchemaType = z.infer<typeof DeleteAccountSchema>;
+
+export const ChangeEmailSchema = z.object({
+  newEmail: z
+    .string()
+    .trim()
+    .email("Please enter a valid email address")
+    .max(254, "Email is too long"),
+});
+
+export type ChangeEmailSchemaType = z.infer<typeof ChangeEmailSchema>;

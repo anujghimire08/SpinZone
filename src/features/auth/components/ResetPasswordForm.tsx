@@ -10,7 +10,7 @@ import {
   type ResetPasswordSchemaType,
 } from "@/features/auth/schemas/auth";
 
-import { resetPassword } from "@/features/auth/client/reset-password";
+import { resetPassword } from "@/features/account/client/reset-password";
 
 interface ResetPasswordFormProps {
   token: string;

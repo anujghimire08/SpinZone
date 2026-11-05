@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { forgotPassword } from "@/features/auth/client/forgot-password";
+import { forgotPassword } from "@/features/account/client/forgot-password";
 import {
   ForgotPasswordSchema,
   ForgotPasswordSchemaType,

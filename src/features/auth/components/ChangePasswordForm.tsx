@@ -9,7 +9,7 @@ import {
   type ChangePasswordSchemaType,
 } from "@/features/auth/schemas/auth";
 
-import { passwordChange } from "@/features/auth/client/change-password";
+import { passwordChange } from "@/features/account/client/change-password";
 
 const ChangePasswordForm = () => {
   const [success, setSuccess] = useState("");

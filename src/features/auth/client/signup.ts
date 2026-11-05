@@ -1,5 +1,5 @@
 import { type SignupSchemaType } from "../schemas/auth";
-import { authClient } from "./auth-client";
+import { authClient } from "../../auth-client";
 
 export const getSignup = async (values: SignupSchemaType) => {
   const { name, email, password } = values;

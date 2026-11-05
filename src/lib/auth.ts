@@ -2,7 +2,11 @@ import { db } from "@/lib/prisma";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import { createAuthMiddleware, APIError } from "better-auth/api";
+import {
+  createAuthMiddleware,
+  APIError,
+  sendVerificationEmail,
+} from "better-auth/api";
 import { LoginSchema, SignupSchema } from "@/features/auth/schemas/auth";
 import { resend } from "./resend";
 
@@ -54,6 +58,37 @@ export const auth = betterAuth({
     },
     deleteUser: {
       enabled: true,
+    },
+    changeEmail: {
+      enabled: true,
+    },
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }) => {
+      const { data, error } = await resend.emails.send({
+        from: "onboarding@resend.dev",
+        // to: user.email, chanage when use custom domain
+        to: "contact.anujghimire@gmail.com",
+        subject: "Verify Your New Email Address",
+        html: `
+        <div>
+          <h2>Email Change Verification</h2>
+          <p>Hello ${user.name},</p>
+          <p>We received a request to change your email address.</p>
+          <p>
+            <a href="${url}">Verify New Email Address</a>
+          </p>
+          <p>If you didn't request this change, you can ignore this email.</p>
+        </div>
+      `,
+      });
+
+      if (error) {
+        console.error("Resend error:", error);
+        throw new Error(error.message);
+      }
+
+      console.log("Verification email sent:", data?.id);
     },
   },
   hooks: {

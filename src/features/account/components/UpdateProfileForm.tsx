@@ -10,7 +10,7 @@ import {
   type UpdateProfileSchemaType,
 } from "@/features/auth/schemas/auth";
 
-import { updateProfile } from "@/features/auth/client/update-profile";
+import { updateProfile } from "@/features/account/client/update-profile";
 
 interface UpdateProfileFormProps {
   initialName: string;
