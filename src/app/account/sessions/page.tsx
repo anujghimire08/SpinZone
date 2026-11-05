@@ -1,5 +1,6 @@
 import ActiveSessions from "@/features/account/components/ActiveSessions";
 import ChangePasswordForm from "@/features/auth/components/ChangePasswordForm";
+import Link from "next/link";
 
 const SessionPage = () => {
   return (
@@ -21,8 +22,14 @@ const SessionPage = () => {
           </p>
         </div>
 
-        <div className="rounded-lg border border-dashed p-4">
+        <div className="rounded-lg border border-dashed p-4 relative">
           <ChangePasswordForm />
+          <Link
+            className="absolute right-4 top-4 rounded-md border px-4 py-2"
+            href="/forgot-password"
+          >
+            Forget Password
+          </Link>
         </div>
       </section>
 

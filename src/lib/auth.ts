@@ -4,6 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { createAuthMiddleware, APIError } from "better-auth/api";
 import { LoginSchema, SignupSchema } from "@/features/auth/schemas/auth";
+import { resend } from "./resend";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -11,6 +12,29 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      const { error, data } = await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to: user.email,
+        subject: "Reset your password",
+        html: `
+                <div>
+                <h2>Password Reset Request</h2>
+                <p>Hello ${user.name},</p>
+                <p>We received a request to reset your password.</p>
+                <p>
+                  <a href="${url}">Reset Password</a>
+                </p>
+                <p>If you didn't request this, you can ignore this email.</p>
+                </div>
+        `,
+      });
+      if (error) {
+        console.error("Resend error:", error);
+        throw new Error(error.message);
+      }
+      console.log("Email sent successfully:", data?.id);
+    },
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7,

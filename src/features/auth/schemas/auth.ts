@@ -63,3 +63,21 @@ export const UpdateProfileSchema = z.object({
 });
 
 export type UpdateProfileSchemaType = z.infer<typeof UpdateProfileSchema>;
+
+export const ForgotPasswordSchema = z.object({
+  email: z.string().trim().email("Enter a valid email address"),
+});
+
+export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
+
+export const ResetPasswordSchema = z
+  .object({
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your new password"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>;
