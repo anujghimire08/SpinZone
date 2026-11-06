@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProduct } from "../actions/update-product";
 import {
   CreateProductSchema,
+  CreateProductSchemaInput,
   CreateProductSchemaType,
 } from "@/features/admin/schemas/product";
 import { useState } from "react";
@@ -29,7 +30,7 @@ const ProductForm = ({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<CreateProductSchemaType>({
+  } = useForm<CreateProductSchemaInput, undefined, CreateProductSchemaType>({
     resolver: zodResolver(CreateProductSchema),
     defaultValues: {
       name: initialData?.name ?? "",
@@ -41,12 +42,13 @@ const ProductForm = ({
       discount_percent: initialData?.discount_percent ?? 0,
       brand: initialData?.brand ?? "",
       isActive: initialData?.isActive ?? true,
+      initialStock: initialData?.initialStock ?? 0,
     },
   });
 
   const [serverMessage, setServerMessage] = useState("");
 
-  const onSubmit = async (data: CreateProductSchemaType) => {
+  const onSubmit = async (data: CreateProductSchemaInput) => {
     setServerMessage("");
 
     try {
@@ -147,6 +149,24 @@ const ProductForm = ({
           <input id="isActive" type="checkbox" {...register("isActive")} />
 
           <label htmlFor="isActive">Available (visible in storefront)</label>
+        </div>
+      )}
+
+      {!productId && (
+        <div>
+          <label htmlFor="initialStock">Initial Stock</label>
+
+          <input
+            id="initialStock"
+            type="number"
+            min="0"
+            step="1"
+            {...register("initialStock", { valueAsNumber: true })}
+          />
+
+          {errors.initialStock && (
+            <p className="text-red-500">{errors.initialStock.message}</p>
+          )}
         </div>
       )}
 

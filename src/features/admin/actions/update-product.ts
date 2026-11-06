@@ -27,10 +27,12 @@ export async function updateProduct(id: string, input: unknown) {
   }
 
   // 3. Update product
+
+  const { initialStock, ...productData } = validation.data;
   try {
     const product = await db.product.update({
       where: { id },
-      data: validation.data,
+      data: productData,
     });
 
     return {

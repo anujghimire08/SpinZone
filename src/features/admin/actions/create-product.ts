@@ -27,10 +27,16 @@ export async function createProduct(input: unknown) {
   }
 
   // 3. Database operation
+  const { initialStock, ...productData } = validation.data;
   try {
     const product = await db.product.create({
       data: {
-        ...validation.data,
+        ...productData,
+        inventory: {
+          create: {
+            quantity: initialStock,
+          },
+        },
       },
     });
 
