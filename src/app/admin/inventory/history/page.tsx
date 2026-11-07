@@ -3,7 +3,12 @@ import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/role-guard";
 import Link from "next/link";
 interface ParamsType {
-  searchParams: Promise<{ type?: string; product_id: string; page?: string }>;
+  searchParams: Promise<{
+    type?: string;
+    product_id?: string;
+    search?: string;
+    page?: string;
+  }>;
 }
 const HistoryPage = async ({ searchParams }: ParamsType) => {
   await requireAdmin();
@@ -15,10 +20,12 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
     params.product_id && params.product_id !== "ALL"
       ? params.product_id
       : undefined;
+
+  const search = params.search?.trim() || undefined;
   const currentPage = Math.max(1, Number(params.page) || 1);
 
   const [result, products] = await Promise.all([
-    getInventoryHistory({ type, product_id, currentPage }),
+    getInventoryHistory({ type, product_id, search, currentPage }),
     db.product.findMany({
       select: {
         id: true,
@@ -38,7 +45,11 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
         </p>
       </div>
 
-      <form method="GET" className="flex flex-wrap items-center gap-3">
+      <form
+        method="GET"
+        className="flex flex-wrap items-center gap-3"
+        key={`${type ?? "ALL"}-${product_id ?? "ALL"}-${search ?? ""}`}
+      >
         <select
           name="type"
           defaultValue={type ?? "ALL"}
@@ -63,12 +74,26 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
           ))}
         </select>
 
+        <input
+          type="text"
+          name="search"
+          placeholder="Search product, admin name or email..."
+          defaultValue={search ?? ""}
+          className="rounded-md border w-80 px-3 py-2"
+        />
+
         <button
           type="submit"
           className="rounded-md bg-black px-4 py-2 text-white"
         >
           Filter
         </button>
+        <Link
+          href="/admin/inventory/history"
+          className="rounded-md bg-black px-4 py-2 text-white"
+        >
+          Reset
+        </Link>
       </form>
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">
@@ -77,11 +102,13 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
 
         <div className="flex gap-2">
           <Link
-            href={`?type=${type ?? "ALL"}&product_id=${product_id ?? "ALL"}&page=${currentPage - 1}`}
+            href={`?type=${type ?? "ALL"}&product_id=${product_id ?? "ALL"}&search=${encodeURIComponent(search ?? "")}&page=${result.page - 1}`}
             className={`rounded-md border px-4 py-2 ${
-              currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+              result.page >= result.totalPages
+                ? "pointer-events-none opacity-50"
+                : ""
             }`}
-            aria-disabled={currentPage <= 1}
+            aria-disabled={result.page >= result.totalPages}
           >
             Previous
           </Link>
@@ -91,7 +118,7 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
           </span>
 
           <Link
-            href={`?type=${type ?? "ALL"}&product_id=${product_id ?? "ALL"}&page=${currentPage + 1}`}
+            href={`?type=${type ?? "ALL"}&product_id=${product_id ?? "ALL"}&search=${encodeURIComponent(search ?? "")}&page=${result.page + 1}`}
             className={`rounded-md border px-4 py-2 ${
               currentPage >= result?.totalPages
                 ? "pointer-events-none opacity-50"
