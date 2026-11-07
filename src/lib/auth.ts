@@ -2,11 +2,7 @@ import { db } from "@/lib/prisma";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import {
-  createAuthMiddleware,
-  APIError,
-  sendVerificationEmail,
-} from "better-auth/api";
+import { createAuthMiddleware, APIError } from "better-auth/api";
 import { LoginSchema, SignupSchema } from "@/features/auth/schemas/auth";
 import { resend } from "./resend";
 

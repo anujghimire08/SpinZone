@@ -19,17 +19,18 @@ enum DeliveryStatus {
 }
 
 model User {
-  id            String    @id
-  name          String    @db.VarChar(40)
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  role          UserRole  @default(CUSTOMER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  customer      Customer?
+  id                    String                @id
+  name                  String                @db.VarChar(40)
+  email                 String
+  emailVerified         Boolean               @default(false)
+  image                 String?
+  role                  UserRole              @default(CUSTOMER)
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  sessions              Session[]
+  accounts              Account[]
+  customer              Customer?
+  inventory_adjustments InventoryAdjustment[]
 
   @@unique([email])
   @@map("user")
@@ -86,23 +87,24 @@ model Categorie {
 }
 
 model Product {
-  id               String            @id @default(cuid())
-  name             String
-  description      String?
-  category_id      String
-  categorie        Categorie         @relation(fields: [category_id], references: [id])
-  price            Decimal           @db.Decimal(10, 2)
-  slug             String            @unique
-  img              String
-  discount_percent Decimal?          @db.Decimal(5, 2)
-  brand            String
-  isActive         Boolean           @default(true)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  customer_review  CustomerReviews[]
-  inventory        Inventory?
-  cart_item        CartItem[]
-  order_item       OrderItem[]
+  id                    String                @id @default(cuid())
+  name                  String
+  description           String?
+  category_id           String
+  categorie             Categorie             @relation(fields: [category_id], references: [id])
+  price                 Decimal               @db.Decimal(10, 2)
+  slug                  String                @unique
+  img                   String
+  discount_percent      Decimal?              @db.Decimal(5, 2)
+  brand                 String
+  isActive              Boolean               @default(true)
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  inventory_adjustments InventoryAdjustment[]
+  customer_review       CustomerReviews[]
+  inventory             Inventory?
+  cart_item             CartItem[]
+  order_item            OrderItem[]
 
   @@map("products")
 }
@@ -132,6 +134,28 @@ model Inventory {
   @@map("inventories")
 }
 
+enum InventoryAdjustmentType {
+  ADD
+  REMOVE
+}
+
+model InventoryAdjustment {
+  id               String                  @id @default(cuid())
+  product_id       String
+  admin_id         String?
+  admin            User?                   @relation(fields: [admin_id], references: [id], onDelete: SetNull)
+  product          Product                 @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  type             InventoryAdjustmentType
+  quantity         Int
+  previousQuantity Int
+  newQuantity      Int
+  createdAt        DateTime                @default(now())
+
+  @@index([product_id, createdAt])
+  @@index([admin_id, createdAt])
+  @@map("inventory_adjustments")
+}
+
 model Cart {
   id          String     @id @default(cuid())
   customer_id String     @unique
@@ -144,14 +168,15 @@ model Cart {
 }
 
 model CartItem {
-  id         String   @id @default(cuid())
+  id         String  @id @default(cuid())
   cart_id    String
-  cart       Cart     @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  cart       Cart    @relation(fields: [cart_id], references: [id], onDelete: Cascade)
   product_id String
-  product    Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
   quantity   Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([cart_id, product_id])
   @@map("cart_items")

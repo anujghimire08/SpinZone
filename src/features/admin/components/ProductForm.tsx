@@ -16,7 +16,7 @@ interface ProductFormProps {
     id: string;
     name: string;
   }[];
-  initialData?: CreateProductSchemaType;
+  initialData?: CreateProductSchemaInput;
   productId?: string;
 }
 
@@ -30,7 +30,7 @@ const ProductForm = ({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<CreateProductSchemaInput, undefined, CreateProductSchemaType>({
+  } = useForm<CreateProductSchemaInput, any, CreateProductSchemaType>({
     resolver: zodResolver(CreateProductSchema),
     defaultValues: {
       name: initialData?.name ?? "",

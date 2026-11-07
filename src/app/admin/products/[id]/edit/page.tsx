@@ -8,6 +8,19 @@ interface EditProductPageProps {
   }>;
 }
 
+export type InitialDataProps = {
+  name: string;
+  category_id: string;
+  price: number;
+  slug: string;
+  img: string;
+  brand: string;
+  initialStock?: number;
+  description?: string;
+  discount_percent?: number;
+  isActive?: boolean;
+};
+
 const EditProductPage = async ({ params }: EditProductPageProps) => {
   const { id } = await params;
 
@@ -30,7 +43,7 @@ const EditProductPage = async ({ params }: EditProductPageProps) => {
     notFound();
   }
 
-  const initialData = {
+  const initialData: InitialDataProps = {
     name: product.name,
     description: product.description ?? "",
     category_id: product.category_id,
