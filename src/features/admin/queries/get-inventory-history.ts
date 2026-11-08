@@ -1,3 +1,5 @@
+"server-only";
+
 import { db } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/role-guard";
 import { Prisma } from "@/generated/prisma/client";
