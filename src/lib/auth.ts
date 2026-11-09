@@ -110,12 +110,35 @@ export const auth = betterAuth({
 
       if (ctx.path === "/sign-in/email") {
         const validation = LoginSchema.safeParse(ctx.body);
+
         if (!validation.success) {
           throw new APIError("BAD_REQUEST", {
             message:
               validation.error.issues[0]?.message ?? "Invalid signup data",
           });
         }
+
+        const user = await db.user.findUnique({
+          where: {
+            email: validation.data.email,
+          },
+          select: {
+            role: true,
+            customer: {
+              select: {
+                isActive: true,
+              },
+            },
+          },
+        });
+
+        if (user?.role === "CUSTOMER" && user.customer?.isActive === false) {
+          throw new APIError("FORBIDDEN", {
+            message:
+              "Your account has been deactivated. Please contact support.",
+          });
+        }
+
         return {
           context: {
             ...ctx,
