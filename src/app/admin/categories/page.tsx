@@ -41,19 +41,15 @@ const CategoriesPage = async () => {
                   <td className="p-3">
                     {category.createdAt.toLocaleDateString()}
                   </td>
-                  <td className="p-3">
-                    <span className="text-gray-500">
-                      <td className="flex items-center gap-4">
-                        <Link
-                          href={`/admin/categories/${category.id}/edit`}
-                          className="text-sm font-medium text-blue-600 hover:underline"
-                        >
-                          Edit
-                        </Link>
+                  <td className="flex items-center gap-4">
+                    <Link
+                      href={`/admin/categories/${category.id}/edit`}
+                      className="text-sm font-medium text-blue-600 hover:underline"
+                    >
+                      Edit
+                    </Link>
 
-                        <CategoryDeleteButton categoryId={category.id} />
-                      </td>
-                    </span>
+                    <CategoryDeleteButton categoryId={category.id} />
                   </td>
                 </tr>
               ))

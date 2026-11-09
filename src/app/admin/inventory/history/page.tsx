@@ -104,11 +104,9 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
           <Link
             href={`?type=${type ?? "ALL"}&product_id=${product_id ?? "ALL"}&search=${encodeURIComponent(search ?? "")}&page=${result.page - 1}`}
             className={`rounded-md border px-4 py-2 ${
-              result.page >= result.totalPages
-                ? "pointer-events-none opacity-50"
-                : ""
+              result.page <= 1 ? "pointer-events-none opacity-50" : ""
             }`}
-            aria-disabled={result.page >= result.totalPages}
+            aria-disabled={result.page <= 1}
           >
             Previous
           </Link>
@@ -120,11 +118,11 @@ const HistoryPage = async ({ searchParams }: ParamsType) => {
           <Link
             href={`?type=${type ?? "ALL"}&product_id=${product_id ?? "ALL"}&search=${encodeURIComponent(search ?? "")}&page=${result.page + 1}`}
             className={`rounded-md border px-4 py-2 ${
-              currentPage >= result?.totalPages
+              result.page >= result?.totalPages
                 ? "pointer-events-none opacity-50"
                 : ""
             }`}
-            aria-disabled={currentPage >= result?.totalPages}
+            aria-disabled={result.page >= result?.totalPages}
           >
             Next
           </Link>
