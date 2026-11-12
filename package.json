@@ -11,6 +11,7 @@
   "dependencies": {
     "@better-auth/infra": "^0.4.25",
     "@hookform/resolvers": "^7.0.1",
+    "@imagekit/next": "^2.1.6",
     "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.1",
     "better-auth": "^1.7.14",
@@ -37,5 +38,5 @@
     "tsx": "^4.23.15",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@12.15.0"
+  "packageManager": "pnpm@12.18.0"
 }
