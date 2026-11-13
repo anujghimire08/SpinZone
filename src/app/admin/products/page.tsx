@@ -1,3 +1,4 @@
+import Image from "@/features/admin/components/Image";
 import {
   getProductBrands,
   getProducts,
@@ -128,10 +129,13 @@ const ProductsPage = async ({ searchParams }: ParamsType) => {
               result.products.map((product) => (
                 <tr key={product.id}>
                   <td className="border p-3">
-                    <img
+                    <Image
                       src={product.img}
                       alt={product.name}
-                      className="h-12 w-12 rounded-md object-cover"
+                      className="object-cover"
+                      width={40}
+                      height={40}
+                      fallbackText="404"
                     />
                   </td>
 

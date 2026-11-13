@@ -55,7 +55,6 @@ const AdminPage = async () => {
           <h2 className="mt-2 text-2xl font-bold">{stats.lowStockProducts}</h2>
         </div>
       </div>
-      {/* Order Status Overview */}
       <section className="space-y-4 rounded-lg border p-5">
         <div className="flex items-center justify-between gap-3">
           <div>

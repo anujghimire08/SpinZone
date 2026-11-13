@@ -1,5 +1,7 @@
-const Home = () => {
-  return <div>Home</div>;
+import Image from "@/features/admin/components/Image";
+
+const Home = async () => {
+  return <div>home</div>;
 };
 
 export default Home;
