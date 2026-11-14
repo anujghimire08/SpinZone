@@ -18,7 +18,7 @@ export const addToCart = async (inputs: unknown) => {
 
   if (!validation.success) {
     return {
-      success: false,
+      success: false as const,
       error: validation.error.issues[0]?.message ?? "Invalid cart information.",
     };
   }
@@ -49,14 +49,14 @@ export const addToCart = async (inputs: unknown) => {
 
             if (!product || !product.isActive) {
               return {
-                success: false,
+                success: false as const,
                 error: "Product is unavailable.",
               };
             }
 
             if (!product.inventory || product.inventory.quantity < quantity) {
               return {
-                success: false,
+                success: false as const,
                 error: "Insufficient stock available.",
               };
             }
@@ -82,7 +82,7 @@ export const addToCart = async (inputs: unknown) => {
 
             if (totalQuantity > product.inventory.quantity) {
               return {
-                success: false,
+                success: false as const,
                 error: "Requested quantity exceeds available stock.",
               };
             }
