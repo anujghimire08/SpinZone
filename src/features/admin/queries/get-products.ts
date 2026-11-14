@@ -1,4 +1,4 @@
-"server-only";
+import "server-only";
 
 import { db } from "@/lib/prisma";
 import { Prisma } from "@/generated/prisma/client";
@@ -9,6 +9,7 @@ interface getProductPropsType {
   search?: string;
   perPage?: number;
   currentPage?: number;
+  isActive?: boolean;
 }
 
 export const getProducts = async ({
@@ -17,9 +18,11 @@ export const getProducts = async ({
   search,
   perPage = 5,
   currentPage = 1,
+  isActive,
 }: getProductPropsType) => {
   const where: Prisma.ProductWhereInput = {
     ...(brand && { brand }),
+    ...(isActive !== undefined && { isActive }),
     ...(product_id && { id: product_id }),
     ...(search && {
       OR: [

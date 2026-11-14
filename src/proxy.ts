@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import {
-  PublicRoutes,
+  isPublicRoute,
   AuthRoutes,
   ApiAuthPrefix,
   DEFAULT_LOGIN_REDIRECT,
@@ -9,17 +9,18 @@ import {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const isApiAuthRoute = pathname.startsWith(ApiAuthPrefix);
   const isAuthRoute = AuthRoutes.includes(pathname);
-  const isPublicRoute = PublicRoutes.includes(pathname);
+  const isPublic = isPublicRoute(pathname);
+
+  if (isPublic) {
+    return NextResponse.next();
+  }
 
   if (isApiAuthRoute) {
     return NextResponse.next();
   }
-  if (isPublicRoute) {
-    return NextResponse.next();
-  }
+
   const session = await auth.api.getSession({
     headers: request.headers,
   });
