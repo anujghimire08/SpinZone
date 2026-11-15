@@ -23,7 +23,7 @@ export const auth = betterAuth({
     autoSignIn: false,
     sendResetPassword: async ({ user, url }) => {
       const { error, data } = await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: process.env.EMAIL_FROM!,
         to: user.email,
         subject: "Reset your password",
         html: `
@@ -70,9 +70,8 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
       const { data, error } = await resend.emails.send({
-        from: "onboarding@resend.dev",
-        // to: user.email, chanage when use custom domain
-        to: "contact.anujghimire@gmail.com",
+        from: process.env.EMAIL_FROM!,
+        to: user.email,
         subject: "Verify Your New Email Address",
         html: `
         <div>

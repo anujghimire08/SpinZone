@@ -1,8 +1,0 @@
-1: Confirmation before logging out all devices
-This is a destructive action. A user could accidentally click Log out all devices and invalidate every active session.
-
-Let's add a confirmation dialog:
-1. User clicks Log out all devices.
-2. Show: "Are you sure you want to log out from all devices?"
-3. User confirms → call revokeSessionsHandler.
-4. User cancels → close the dialog without making an API request.
