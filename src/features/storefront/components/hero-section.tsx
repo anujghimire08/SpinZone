@@ -70,7 +70,7 @@ const HeroSection = () => {
             className="absolute left-1/2 top-1/2 aspect-square w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-700/15"
           />
 
-          <div className="relative h-[340px] w-full sm:h-[460px] lg:h-[540px]">
+          <div className="relative mt-4   h-[340px] w-full sm:h-[460px] lg:h-[540px]">
             <Image
               src="/hero-racket.png"
               alt="Table tennis racket"
