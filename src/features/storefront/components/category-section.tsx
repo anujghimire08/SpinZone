@@ -12,6 +12,7 @@ const CategorySection = async () => {
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-700 sm:text-xs">
               Explore SpinZone
             </p>
+
             <h2 className="mt-3 text-3xl font-bold tracking-[-0.045em] text-zinc-950 sm:text-4xl">
               Find your equipment.
             </h2>
@@ -30,22 +31,24 @@ const CategorySection = async () => {
             <p className="font-medium text-zinc-800">
               No categories available yet.
             </p>
+
             <p className="mt-2 text-sm text-zinc-500">
               Check back soon for available products.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-flow-col auto-cols-[85%] overflow-x-auto overflow-y-hidden scrollbar-hide overscroll-x-contain sm:auto-cols-[45%] lg:auto-cols-[33.333%]">
             {categories.map((category, index) => (
               <Link
                 key={category.id}
                 href={`/products?category=${encodeURIComponent(category.slug)}`}
-                className="group flex min-h-36 items-center justify-between border-b border-zinc-300 py-7 transition-colors hover:bg-white sm:px-5 lg:min-h-40"
+                className="group flex min-h-36 items-center justify-between border-b border-r border-zinc-300 py-7 transition-colors hover:bg-white sm:px-5 lg:min-h-40"
               >
                 <div className="flex items-center gap-5">
                   <span className="text-xs tabular-nums text-zinc-400">
                     {String(index + 1).padStart(2, "0")}
                   </span>
+
                   <h3 className="text-xl font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-violet-700 sm:text-2xl">
                     {category.name}
                   </h3>

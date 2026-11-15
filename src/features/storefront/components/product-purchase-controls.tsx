@@ -106,7 +106,6 @@ const ProductPurchaseControls = ({
           : isPending
             ? "Adding to cart..."
             : "Add to Cart"}
-        {stock > 0 && !isPending && <span aria-hidden="true">→</span>}
       </button>
 
       {feedback && (

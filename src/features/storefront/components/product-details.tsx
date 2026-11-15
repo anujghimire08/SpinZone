@@ -40,7 +40,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
         </h1>
 
         <p className="mt-2 text-xs text-zinc-500">
-          Brand:{" "}
+          Brand:
           <span className="font-semibold text-zinc-800">{product.brand}</span>
         </p>
 
