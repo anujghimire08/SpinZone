@@ -21,7 +21,6 @@ const ProductSearch = () => {
       params.delete("search");
     }
 
-    // A new search should start from the first page.
     params.delete("page");
 
     const query = params.toString();
@@ -31,17 +30,35 @@ const ProductSearch = () => {
 
   return (
     <form onSubmit={handleSearch} className="flex w-full max-w-xl gap-2">
-      <input
-        type="search"
-        value={search}
-        onChange={(event) => setSearch(event.target.value)}
-        placeholder="Search products, brands..."
-        className="min-w-0 flex-1 rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-white outline-none transition placeholder:text-zinc-500 focus:border-violet-500"
-      />
+      <div className="relative min-w-0 flex-1">
+        <svg
+          aria-hidden="true"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+
+        <input
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search products, brands..."
+          className="h-12 w-full border border-zinc-300 bg-white pl-11 pr-4 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-violet-600"
+        />
+      </div>
 
       <button
         type="submit"
-        className="rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-500"
+        className="h-12 bg-violet-700 px-5 text-sm font-semibold text-white transition-colors hover:bg-violet-600"
       >
         Search
       </button>

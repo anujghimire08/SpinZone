@@ -26,17 +26,21 @@ const CustomerStatusButton = ({
     if (!confirmed) return;
 
     startTransition(async () => {
-      const result = await updateCustomerStatus({
-        customerId,
-        isActive: nextStatus,
-      });
+      try {
+        const result = await updateCustomerStatus({
+          customerId,
+          isActive: nextStatus,
+        });
 
-      if (!result.success) {
-        window.alert(result.error);
-        return;
+        if (!result.success) {
+          window.alert(result.error);
+          return;
+        }
+
+        router.refresh();
+      } catch {
+        window.alert("Something went wrong. Please try again.");
       }
-
-      router.refresh();
     });
   };
 
@@ -45,7 +49,11 @@ const CustomerStatusButton = ({
       type="button"
       onClick={handleStatusChange}
       disabled={isPending}
-      className="rounded-md border px-4 py-2 disabled:opacity-50"
+      className={`w-full cursor-pointer px-4 py-3 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto ${
+        isActive
+          ? "border border-red-200 bg-white text-red-700 hover:bg-red-50 focus:ring-red-600"
+          : "bg-violet-700 text-white hover:bg-violet-800 focus:ring-violet-700"
+      }`}
     >
       {isPending
         ? "Updating..."

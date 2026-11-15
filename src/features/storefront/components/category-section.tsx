@@ -5,65 +5,63 @@ const CategorySection = async () => {
   const categories = await getStorefrontCategories();
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24">
-      <div className="mb-12 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-400">
-            Explore our collection
-          </p>
+    <section className="bg-[#f7f7f5] py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-zinc-300 pb-7">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-700 sm:text-xs">
+              Explore SpinZone
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-[-0.045em] text-zinc-950 sm:text-4xl">
+              Find your equipment.
+            </h2>
+          </div>
 
-          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            Shop by Category
-          </h2>
-
-          <p className="mt-3 text-zinc-400">
-            Find the right equipment for your game.
-          </p>
+          <Link
+            href="/categories"
+            className="text-sm font-semibold text-zinc-700 underline decoration-zinc-300 underline-offset-4 transition hover:text-violet-700 hover:decoration-violet-700"
+          >
+            View all categories <span aria-hidden="true">↗</span>
+          </Link>
         </div>
 
-        <Link
-          href="/products"
-          className="text-sm font-semibold text-violet-400 transition hover:text-violet-300"
-        >
-          View all products →
-        </Link>
-      </div>
-
-      {categories.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-zinc-900 p-10 text-center">
-          <p className="font-semibold">No categories available yet.</p>
-          <p className="mt-2 text-sm text-zinc-500">
-            Check back soon for new collections.
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/products?category=${encodeURIComponent(category.slug)}`}
-              className="group flex min-h-52 flex-col justify-between rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-800 to-zinc-950 p-7 transition duration-300 hover:-translate-y-1 hover:border-violet-500/50"
-            >
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-400">
-                SpinZone Collection
-              </span>
-
-              <div>
-                <h3 className="text-2xl font-bold transition group-hover:text-violet-400">
-                  {category.name}
-                </h3>
-
-                <p className="mt-3 text-sm text-zinc-400">
-                  Explore collection
-                  <span className="ml-2 inline-block transition group-hover:translate-x-1">
-                    →
+        {categories.length === 0 ? (
+          <div className="py-16 text-center">
+            <p className="font-medium text-zinc-800">
+              No categories available yet.
+            </p>
+            <p className="mt-2 text-sm text-zinc-500">
+              Check back soon for available products.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category, index) => (
+              <Link
+                key={category.id}
+                href={`/products?category=${encodeURIComponent(category.slug)}`}
+                className="group flex min-h-36 items-center justify-between border-b border-zinc-300 py-7 transition-colors hover:bg-white sm:px-5 lg:min-h-40"
+              >
+                <div className="flex items-center gap-5">
+                  <span className="text-xs tabular-nums text-zinc-400">
+                    {String(index + 1).padStart(2, "0")}
                   </span>
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+                  <h3 className="text-xl font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-violet-700 sm:text-2xl">
+                    {category.name}
+                  </h3>
+                </div>
+
+                <span
+                  aria-hidden="true"
+                  className="text-xl text-zinc-400 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-violet-700"
+                >
+                  ↗
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 };

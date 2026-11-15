@@ -9,16 +9,18 @@ const CartPage = async () => {
     return (
       <main className="mx-auto flex min-h-[70vh] max-w-7xl items-center justify-center px-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white">Unable to Load Cart</h1>
+          <h1 className="text-2xl font-bold text-zinc-950">
+            Unable to load cart
+          </h1>
 
-          <p className="mt-3 text-sm text-zinc-400">{result.error}</p>
+          <p className="mt-3 text-sm text-zinc-500">{result.error}</p>
 
-          <a
+          <Link
             href="/products"
-            className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+            className="mt-6 inline-flex bg-violet-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-800"
           >
-            Continue Shopping →
-          </a>
+            Continue shopping
+          </Link>
         </div>
       </main>
     );
@@ -30,18 +32,18 @@ const CartPage = async () => {
     return (
       <main className="mx-auto flex min-h-[75vh] max-w-7xl items-center justify-center px-6 py-16">
         <div className="flex max-w-md flex-col items-center text-center">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full border border-violet-500/20 bg-violet-500/10">
+          <div className="flex h-20 w-20 items-center justify-center border border-violet-700/20 bg-violet-700/5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="42"
-              height="42"
+              width="38"
+              height="38"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-violet-400"
+              className="text-violet-700"
             >
               <circle cx="9" cy="21" r="1" />
               <circle cx="20" cy="21" r="1" />
@@ -49,20 +51,20 @@ const CartPage = async () => {
             </svg>
           </div>
 
-          <h1 className="mt-7 text-3xl font-bold text-white">
-            Your Cart Is Empty
+          <h1 className="mt-7 text-3xl font-bold tracking-tight text-zinc-950">
+            Your cart is empty
           </h1>
 
-          <p className="mt-3 text-sm leading-6 text-zinc-400">
+          <p className="mt-3 text-sm leading-7 text-zinc-600">
             Your next table tennis upgrade is waiting. Explore our collection
             and find the right equipment for your game.
           </p>
 
           <Link
             href="/products"
-            className="mt-7 inline-flex items-center justify-center rounded-lg bg-violet-600 px-7 py-3 font-semibold text-white transition hover:bg-violet-700"
+            className="mt-7 inline-flex items-center justify-center bg-violet-700 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-violet-800"
           >
-            Explore Products
+            Explore products
           </Link>
         </div>
       </main>
@@ -76,27 +78,27 @@ const CartPage = async () => {
   const hasUnavailableItems = unavailableItems.length > 0;
 
   return (
-    <main className="mx-auto min-h-screen max-w-7xl px-6 py-12">
-      <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <main className="mx-auto min-h-screen max-w-7xl px-5 py-12 sm:px-6 lg:py-16">
+      <div className="mb-10 flex flex-col justify-between gap-5 border-b border-zinc-200 pb-8 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            Your Selection
+          <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-violet-700 sm:text-xs">
+            Your selection
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">
-            Shopping Cart
+          <h1 className="mt-3 text-3xl font-bold tracking-[-0.045em] text-zinc-950 sm:text-4xl">
+            Shopping cart
           </h1>
 
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-3 text-sm text-zinc-500">
             {totalItems} {totalItems === 1 ? "item" : "items"} in your cart
           </p>
         </div>
 
         <Link
           href="/products"
-          className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+          className="text-sm font-semibold text-zinc-700 underline decoration-zinc-300 underline-offset-4 transition-colors hover:text-violet-700 hover:decoration-violet-700"
         >
-          Continue Shopping →
+          Continue shopping
         </Link>
       </div>
 
@@ -109,12 +111,12 @@ const CartPage = async () => {
             return (
               <article
                 key={item.id}
-                className="rounded-2xl border border-white/10 bg-zinc-900/70 p-4 sm:p-5"
+                className="border border-zinc-200 bg-white p-4 sm:p-5"
               >
                 <div className="flex flex-col gap-5 sm:flex-row">
                   <Link
                     href={`/products/${item.slug}`}
-                    className="relative aspect-square w-full shrink-0 overflow-hidden rounded-xl border border-white/10 bg-zinc-950 sm:h-36 sm:w-36"
+                    className="relative aspect-square w-full shrink-0 overflow-hidden bg-[#f0f0ed] sm:h-36 sm:w-36"
                   >
                     <Image
                       src={item.img}
@@ -129,19 +131,19 @@ const CartPage = async () => {
                     <div>
                       <Link
                         href={`/products/${item.slug}`}
-                        className="text-lg font-semibold text-white transition hover:text-violet-400"
+                        className="text-lg font-semibold tracking-tight text-zinc-950 transition-colors hover:text-violet-700"
                       >
                         {item.name}
                       </Link>
 
-                      <p className="mt-2 text-sm text-zinc-400">
+                      <p className="mt-2 text-sm text-zinc-500">
                         {item.price < item.originalPrice && (
                           <span className="mr-2 line-through">
                             Rs. {item.originalPrice.toFixed(2)}
                           </span>
                         )}
 
-                        <span className="font-medium text-zinc-200">
+                        <span className="font-semibold text-zinc-900">
                           Rs. {item.price.toFixed(2)}
                         </span>
                         <span className="ml-1">/ unit</span>
@@ -150,17 +152,17 @@ const CartPage = async () => {
 
                     <div className="flex flex-wrap items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <span className="text-sm text-zinc-400">Quantity:</span>
+                        <span className="text-sm text-zinc-500">Quantity:</span>
 
-                        <span className="rounded-lg border border-white/10 bg-zinc-950 px-4 py-2 text-sm font-medium text-white">
+                        <span className="border border-zinc-200 bg-[#f7f7f5] px-4 py-2 text-sm font-medium text-zinc-900">
                           {item.quantity}
                         </span>
                       </div>
 
                       <div className="text-right">
-                        <p className="text-xs text-zinc-500">Item Subtotal</p>
+                        <p className="text-xs text-zinc-500">Item subtotal</p>
 
-                        <p className="mt-1 font-semibold text-white">
+                        <p className="mt-1 font-semibold text-zinc-950">
                           Rs. {item.itemSubtotal.toFixed(2)}
                         </p>
                       </div>
@@ -169,8 +171,8 @@ const CartPage = async () => {
                 </div>
 
                 {isUnavailable && (
-                  <div className="mt-5 rounded-lg border border-red-500/20 bg-red-500/5 px-4 py-3">
-                    <p className="text-sm text-red-400">
+                  <div className="mt-5 border border-red-200 bg-red-50 px-4 py-3">
+                    <p className="text-sm text-red-700">
                       {!item.isActive
                         ? "This product is currently unavailable."
                         : item.availableStock === 0
@@ -184,27 +186,33 @@ const CartPage = async () => {
           })}
         </section>
 
-        <aside className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 lg:sticky lg:top-24">
-          <h2 className="text-xl font-semibold text-white">Order Summary</h2>
+        <aside className="border border-zinc-200 bg-white p-6 lg:sticky lg:top-24">
+          <h2 className="text-xl font-bold tracking-tight text-zinc-950">
+            Order summary
+          </h2>
 
           <div className="mt-6 space-y-4">
             <div className="flex justify-between text-sm">
-              <span className="text-zinc-400">Items ({totalItems})</span>
+              <span className="text-zinc-500">Items ({totalItems})</span>
 
-              <span className="text-zinc-200">Rs. {subtotal.toFixed(2)}</span>
+              <span className="font-medium text-zinc-900">
+                Rs. {subtotal.toFixed(2)}
+              </span>
             </div>
 
-            <div className="flex justify-between text-sm">
-              <span className="text-zinc-400">Shipping</span>
+            <div className="flex justify-between gap-4 text-sm">
+              <span className="text-zinc-500">Shipping</span>
 
-              <span className="text-zinc-500">Calculated at checkout</span>
+              <span className="text-right text-zinc-500">
+                Calculated at checkout
+              </span>
             </div>
 
-            <div className="border-t border-white/10 pt-4">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-white">Subtotal</span>
+            <div className="border-t border-zinc-200 pt-4">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-semibold text-zinc-950">Subtotal</span>
 
-                <span className="text-xl font-bold text-violet-400">
+                <span className="text-xl font-bold text-violet-700">
                   Rs. {subtotal.toFixed(2)}
                 </span>
               </div>
@@ -212,7 +220,7 @@ const CartPage = async () => {
           </div>
 
           {hasUnavailableItems && (
-            <p className="mt-5 text-sm leading-6 text-red-400">
+            <p className="mt-5 text-sm leading-6 text-red-700">
               Please review unavailable items before proceeding to checkout.
             </p>
           )}
@@ -220,9 +228,9 @@ const CartPage = async () => {
           <button
             type="button"
             disabled={hasUnavailableItems}
-            className="mt-7 w-full rounded-lg bg-violet-600 px-6 py-3.5 font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="mt-7 w-full bg-violet-700 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-violet-800 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Proceed to Checkout
+            Proceed to checkout
           </button>
 
           <p className="mt-4 text-center text-xs leading-5 text-zinc-500">

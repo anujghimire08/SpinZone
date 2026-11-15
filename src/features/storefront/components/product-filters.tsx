@@ -11,6 +11,9 @@ interface ProductFiltersProps {
   brands: string[];
 }
 
+const selectClassName =
+  "h-12 min-w-0 border border-zinc-300 bg-white px-4 text-sm text-zinc-800 outline-none transition focus:border-violet-600";
+
 const ProductFilters = ({ categories, brands }: ProductFiltersProps) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -33,11 +36,12 @@ const ProductFilters = ({ categories, brands }: ProductFiltersProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row">
+    <div className="flex flex-col gap-3 sm:flex-row">
       <select
+        aria-label="Filter by category"
         value={searchParams.get("category") ?? ""}
         onChange={(event) => updateFilter("category", event.target.value)}
-        className="rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
+        className={selectClassName}
       >
         <option value="">All Categories</option>
 
@@ -49,9 +53,10 @@ const ProductFilters = ({ categories, brands }: ProductFiltersProps) => {
       </select>
 
       <select
+        aria-label="Filter by brand"
         value={searchParams.get("brand") ?? ""}
         onChange={(event) => updateFilter("brand", event.target.value)}
-        className="rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
+        className={selectClassName}
       >
         <option value="">All Brands</option>
 

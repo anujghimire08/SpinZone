@@ -25,9 +25,10 @@ const ProductSort = () => {
 
   return (
     <select
+      aria-label="Sort products"
       value={searchParams.get("sort") ?? "newest"}
       onChange={(event) => updateSort(event.target.value)}
-      className="rounded-xl border border-white/10 bg-zinc-900 px-4 py-3 text-sm text-white outline-none focus:border-violet-500"
+      className="h-12 w-full border border-zinc-300 bg-white px-4 text-sm text-zinc-800 outline-none transition focus:border-violet-600 sm:w-auto"
     >
       <option value="newest">Newest First</option>
       <option value="price-asc">Price: Low to High</option>

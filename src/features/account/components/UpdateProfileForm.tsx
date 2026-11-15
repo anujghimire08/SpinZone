@@ -25,6 +25,7 @@ const UpdateProfileForm = ({ initialName }: UpdateProfileFormProps) => {
     handleSubmit,
     reset,
     setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<UpdateProfileSchemaType>({
     resolver: zodResolver(UpdateProfileSchema),
@@ -35,47 +36,78 @@ const UpdateProfileForm = ({ initialName }: UpdateProfileFormProps) => {
 
   const onSubmit = async (values: UpdateProfileSchemaType) => {
     setSuccess("");
+    clearErrors("root");
 
-    const result = await updateProfile({
-      name: values.name,
-    });
-
-    if (!result.success) {
-      setError("root", {
-        message: result.error,
+    try {
+      const result = await updateProfile({
+        name: values.name,
       });
-      return;
+
+      if (!result.success) {
+        setError("root", {
+          type: "manual",
+          message: result.error,
+        });
+        return;
+      }
+
+      reset({
+        name: values.name,
+      });
+
+      setSuccess("Profile updated successfully!");
+
+      router.refresh();
+    } catch {
+      setError("root", {
+        type: "manual",
+        message: "Something went wrong. Please try again.",
+      });
     }
-
-    reset({
-      name: values.name,
-    });
-
-    setSuccess("Profile updated successfully!");
-
-    router.refresh();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label htmlFor="name">Full Name</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div className="space-y-2">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-zinc-700"
+        >
+          Full Name
+        </label>
 
         <input
           id="name"
           type="text"
-          {...register("name")}
+          autoComplete="name"
+          placeholder="Enter your full name"
           disabled={isSubmitting}
+          className="w-full border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 outline-none transition focus:border-violet-700 focus:ring-2 focus:ring-violet-700/10 disabled:cursor-not-allowed disabled:bg-zinc-50 disabled:opacity-60"
+          {...register("name")}
         />
 
-        {errors.name && <p>{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-sm text-red-600">{errors.name.message}</p>
+        )}
       </div>
 
-      {errors.root && <p>{errors.root.message}</p>}
+      {errors.root && (
+        <div className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {errors.root.message}
+        </div>
+      )}
 
-      {success && <p>{success}</p>}
+      {success && (
+        <div className="border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+          {success}
+        </div>
+      )}
 
-      <button type="submit" disabled={isSubmitting}>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full cursor-pointer bg-violet-700 px-4 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+      >
         {isSubmitting ? "Updating Profile..." : "Update Profile"}
       </button>
     </form>

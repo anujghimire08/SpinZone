@@ -19,6 +19,7 @@ interface ProductsPageProps {
 const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
   const params = await searchParams;
   const currentPage = Math.max(1, Number(params.page) || 1);
+
   const [result, filters] = await Promise.all([
     getStorefrontProducts({
       search: params.search,
@@ -32,18 +33,18 @@ const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
   ]);
 
   return (
-    <main className="mx-auto min-h-screen max-w-7xl px-6 py-12">
-      <div className="mb-10">
-        <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-violet-400">
-          Explore Our Collection
+    <main className="mx-auto min-h-screen max-w-7xl px-5 py-12 sm:px-6 lg:py-16">
+      <div className="mb-10 border-b border-zinc-200 pb-8">
+        <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-violet-700 sm:text-xs">
+          Explore our collection
         </p>
 
-        <h1 className="text-3xl font-bold text-white sm:text-4xl">
-          Shop All Products
+        <h1 className="text-3xl font-bold tracking-[-0.045em] text-zinc-950 sm:text-4xl lg:text-5xl">
+          Shop all products
         </h1>
 
-        <p className="mt-3 text-zinc-400">
-          Discover the right equipment for your game.
+        <p className="mt-4 max-w-lg text-sm leading-7 text-zinc-600 sm:text-base">
+          Discover table tennis equipment that fits your game.
         </p>
       </div>
 
@@ -55,27 +56,30 @@ const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
         />
       </div>
 
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-zinc-400">
-          {result.totalData} products found
+      <div className="mb-6 flex flex-col gap-4 border-b border-zinc-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-zinc-600">
+          <span className="font-semibold text-zinc-950">
+            {result.totalData}
+          </span>{" "}
+          products found
         </p>
 
         <ProductSort />
       </div>
 
       {result.products.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-zinc-900 px-6 py-16 text-center">
-          <h2 className="text-xl font-semibold text-white">
+        <div className="border border-zinc-200 bg-white px-6 py-16 text-center">
+          <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
             No products found
           </h2>
 
-          <p className="mt-2 text-zinc-400">
+          <p className="mt-2 text-sm text-zinc-500">
             Try adjusting your search or filters.
           </p>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {result.products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

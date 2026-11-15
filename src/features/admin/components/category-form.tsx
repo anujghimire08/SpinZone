@@ -39,45 +39,69 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
   const onSubmit = async (data: CreateCategorySchemaType) => {
     setServerError("");
 
-    const result = category
-      ? await updateCategory(category.id, data)
-      : await createCategory(data);
+    try {
+      const result = category
+        ? await updateCategory(category.id, data)
+        : await createCategory(data);
 
-    if (!result.success) {
-      setServerError(result.error ?? "Something went wrong.");
-      return;
+      if (!result.success) {
+        setServerError(result.error ?? "Something went wrong.");
+        return;
+      }
+
+      reset();
+      router.refresh();
+      router.replace("/admin/categories");
+    } catch {
+      setServerError("Something went wrong. Please try again.");
     }
-
-    reset();
-    router.refresh();
-    router.replace("/admin/categories");
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label htmlFor="name">Category name</label>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6 border border-zinc-200 bg-white p-5 sm:p-6"
+    >
+      <div className="space-y-2">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-zinc-700"
+        >
+          Category Name
+        </label>
 
         <input
           id="name"
-          {...register("name")}
+          type="text"
           placeholder="e.g. Table Tennis"
-          className="w-full rounded border p-2"
+          disabled={isSubmitting}
+          className="w-full border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 outline-none transition focus:border-violet-700 focus:ring-2 focus:ring-violet-700/10 disabled:cursor-not-allowed disabled:bg-zinc-50 disabled:opacity-60"
+          {...register("name")}
         />
 
         {errors.name && (
-          <p className="text-sm text-red-500">{errors.name.message}</p>
+          <p className="text-sm text-red-600">{errors.name.message}</p>
         )}
       </div>
 
-      {serverError && <p className="text-sm text-red-500">{serverError}</p>}
+      {serverError && (
+        <div className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {serverError}
+        </div>
+      )}
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+        className="w-full cursor-pointer bg-violet-700 px-4 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "Creating..." : "Create Category"}
+        {isSubmitting
+          ? category
+            ? "Updating Category..."
+            : "Creating Category..."
+          : category
+            ? "Update Category"
+            : "Create Category"}
       </button>
     </form>
   );

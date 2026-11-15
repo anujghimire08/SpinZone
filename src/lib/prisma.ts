@@ -1,16 +1,24 @@
+import "server-only";
+
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
 
-const connectionString = process.env.DIRECT_URL;
-if (!connectionString) throw new Error("DIRECT_URL Missing");
+const connectionString = process.env.DATABASE_URL;
 
-const adapter = new PrismaPg({
-  connectionString,
-});
+if (!connectionString) {
+  throw new Error("DATABASE_URL is missing");
+}
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
+
+const adapter = new PrismaPg({
+  connectionString,
+  max: 3,
+  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000,
+});
 
 export const db = globalForPrisma.prisma ?? new PrismaClient({ adapter });
 

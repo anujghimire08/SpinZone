@@ -9,9 +9,7 @@ import {
   revokeSession,
   revokeSessions,
 } from "@/features/auth/client/sessions";
-
 import { reauthenticate } from "@/features/auth/client/reauthenticate";
-
 import SessionCard from "@/features/account/components/SessionCard";
 import SessionActions from "@/features/account/components/SessionActions";
 import ReauthenticateForm from "@/features/auth/components/ReauthenticateForm";
@@ -33,7 +31,6 @@ const ActiveSessions = () => {
   );
   const [requiresReauthentication, setRequiresReauthentication] =
     useState(false);
-
   const [userEmail, setUserEmail] = useState("");
   const [currentSessionToken, setCurrentSessionToken] = useState<string | null>(
     null,
@@ -79,7 +76,7 @@ const ActiveSessions = () => {
         setSessions(sessionsResponse.data ?? []);
       } catch {
         if (!ignore) {
-          setError("Failed to fetch sessions!");
+          setError("Failed to fetch sessions.");
         }
       } finally {
         if (!ignore) {
@@ -116,7 +113,7 @@ const ActiveSessions = () => {
         ),
       );
     } catch {
-      setError("Failed to revoke other sessions!");
+      setError("Failed to revoke other sessions.");
     } finally {
       actionInProgress.current = false;
       setLoadingAction(null);
@@ -139,10 +136,9 @@ const ActiveSessions = () => {
       }
 
       setSessions([]);
-
       router.replace("/signin");
     } catch {
-      setError("Failed to revoke sessions!");
+      setError("Failed to revoke sessions.");
     } finally {
       actionInProgress.current = false;
       setLoadingAction(null);
@@ -169,7 +165,7 @@ const ActiveSessions = () => {
         previousSessions.filter((session) => session.token !== token),
       );
     } catch {
-      setError("Failed to revoke session!");
+      setError("Failed to revoke session.");
     } finally {
       actionInProgress.current = false;
       setLoadingSessionToken(null);
@@ -180,6 +176,7 @@ const ActiveSessions = () => {
     if (actionInProgress.current) return;
 
     actionInProgress.current = true;
+    setError(undefined);
 
     try {
       const result = await reauthenticate(userEmail, password);
@@ -206,32 +203,65 @@ const ActiveSessions = () => {
       }
 
       setSessions(sessionsResponse.data ?? []);
-
       setCurrentSessionToken(currentSessionResponse.data.session.token);
-
       setRequiresReauthentication(false);
       setError(undefined);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Reauthentication failed. Please try again.",
+      );
     } finally {
       actionInProgress.current = false;
     }
   };
 
   if (loading) {
-    return <p className="text-sm text-muted-foreground">Loading sessions...</p>;
+    return (
+      <div className="flex items-center gap-3 py-2" role="status">
+        <span className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-200 border-t-violet-700" />
+        <p className="text-sm text-zinc-500">Loading sessions...</p>
+      </div>
+    );
   }
 
   if (requiresReauthentication) {
     return (
-      <ReauthenticateForm
-        email={userEmail}
-        reauthenticateHandler={reauthenticateHandler}
-      />
+      <div className="space-y-5">
+        <div className="space-y-1">
+          <h3 className="text-sm font-semibold text-zinc-950">
+            Verify your identity
+          </h3>
+          <p className="text-sm leading-6 text-zinc-500">
+            For your security, confirm your password before managing active
+            sessions.
+          </p>
+        </div>
+
+        {error && (
+          <p
+            className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+
+        <ReauthenticateForm
+          email={userEmail}
+          reauthenticateHandler={reauthenticateHandler}
+        />
+      </div>
     );
   }
 
   if (sessions.length === 0 && error) {
     return (
-      <p className="text-sm text-destructive" role="alert">
+      <p
+        className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+        role="alert"
+      >
         {error}
       </p>
     );
@@ -239,37 +269,60 @@ const ActiveSessions = () => {
 
   if (sessions.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">No active sessions found.</p>
+      <div className="space-y-2 py-2">
+        <h3 className="text-sm font-semibold text-zinc-950">
+          No active sessions
+        </h3>
+        <p className="text-sm leading-6 text-zinc-500">
+          There are currently no active sessions to display.
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <p className="text-sm font-semibold text-zinc-950">
+            {sessions.length} {sessions.length === 1 ? "session" : "sessions"}
+          </p>
+          <p className="text-xs text-zinc-500">
+            Devices currently signed in to your account.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <SessionActions
+            onRevokeOthers={revokeOtherSessionsHandler}
+            onRevokeAll={revokeSessionsHandler}
+            loadingAction={loadingAction}
+            disabled={loadingAction !== null || loadingSessionToken !== null}
+          />
+        </div>
+      </div>
+
       {error && (
-        <p className="text-sm text-destructive" role="alert">
+        <p
+          className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
           {error}
         </p>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        <SessionActions
-          onRevokeOthers={revokeOtherSessionsHandler}
-          onRevokeAll={revokeSessionsHandler}
-          loadingAction={loadingAction}
-          disabled={loadingAction !== null || loadingSessionToken !== null}
-        />
+      <div className="space-y-3">
+        {sessions.map((session) => (
+          <SessionCard
+            key={session.token}
+            session={session}
+            isCurrentSession={session.token === currentSessionToken}
+            onRevoke={revokeHandler}
+            loading={loadingSessionToken === session.token}
+            disabled={loadingAction !== null || loadingSessionToken !== null}
+          />
+        ))}
       </div>
-
-      {sessions.map((session) => (
-        <SessionCard
-          key={session.token}
-          session={session}
-          isCurrentSession={session.token === currentSessionToken}
-          onRevoke={revokeHandler}
-          loading={loadingSessionToken === session.token}
-          disabled={loadingAction !== null || loadingSessionToken !== null}
-        />
-      ))}
     </div>
   );
 };

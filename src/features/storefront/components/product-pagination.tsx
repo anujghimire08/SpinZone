@@ -58,23 +58,26 @@ const ProductPagination = ({
 
   const pages = getPageNumbers();
 
+  const buttonBase =
+    "flex h-10 min-w-10 items-center justify-center border px-3 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40";
+
   return (
     <nav
       aria-label="Product pagination"
-      className="mt-10 flex flex-wrap items-center justify-center gap-2"
+      className="mt-12 flex flex-wrap items-center justify-center gap-2 border-t border-zinc-200 pt-8"
     >
       <button
         type="button"
         disabled={currentPage <= 1}
         onClick={() => changePage(currentPage - 1)}
-        className="rounded-lg border border-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+        className={`${buttonBase} border-zinc-300 text-zinc-700 hover:border-violet-600 hover:text-violet-700`}
       >
         Previous
       </button>
 
       {pages.map((page, index) =>
         page === "..." ? (
-          <span key={`ellipsis-${index}`} className="px-2 text-zinc-500">
+          <span key={`ellipsis-${index}`} className="px-2 text-zinc-400">
             ...
           </span>
         ) : (
@@ -83,10 +86,10 @@ const ProductPagination = ({
             type="button"
             aria-current={currentPage === page ? "page" : undefined}
             onClick={() => changePage(page)}
-            className={`h-10 min-w-10 rounded-lg px-3 text-sm font-medium transition ${
+            className={`${buttonBase} ${
               currentPage === page
-                ? "bg-violet-600 text-white"
-                : "border border-white/10 text-zinc-300 hover:bg-white/10"
+                ? "border-violet-700 bg-violet-700 text-white"
+                : "border-zinc-300 text-zinc-700 hover:border-violet-600 hover:text-violet-700"
             }`}
           >
             {page}
@@ -98,7 +101,7 @@ const ProductPagination = ({
         type="button"
         disabled={currentPage >= totalPages}
         onClick={() => changePage(currentPage + 1)}
-        className="rounded-lg border border-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+        className={`${buttonBase} border-zinc-300 text-zinc-700 hover:border-violet-600 hover:text-violet-700`}
       >
         Next
       </button>

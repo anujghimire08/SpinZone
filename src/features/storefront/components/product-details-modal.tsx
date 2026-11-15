@@ -7,20 +7,21 @@ interface ProductDetailsModalProps {
 
 const ProductDetailsModal = ({ children }: ProductDetailsModalProps) => {
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/75 p-3 sm:p-6">
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Product details"
-        className="relative max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-white/10 bg-zinc-950 p-6 pt-16 shadow-2xl sm:p-8 sm:pt-16"
+        className="relative max-h-[94vh] w-full max-w-5xl overflow-y-auto border border-zinc-200 bg-[#f7f7f5] p-5 pt-5 shadow-2xl sm:p-8 sm:pt-16"
       >
         <Link
           href="/products"
           aria-label="Close product details"
-          className="absolute right-5 top-5 z-50 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-zinc-900 text-xl text-white transition hover:bg-violet-600"
+          className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center border border-zinc-300 bg-white text-2xl leading-none text-zinc-700 transition-colors hover:border-violet-700 hover:bg-violet-700 hover:text-white"
         >
           &times;
         </Link>
+
         {children}
       </div>
     </div>

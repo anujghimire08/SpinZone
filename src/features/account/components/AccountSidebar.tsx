@@ -32,16 +32,25 @@ const AccountSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-full shrink-0 md:w-60">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold">Account Settings</h2>
-        <p className="text-sm text-muted-foreground">Manage your account</p>
+    <aside className="w-full shrink-0 lg:w-64">
+      <div className="mb-8 border-b border-zinc-200 pb-6">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-violet-700">
+          Settings
+        </p>
+
+        <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
+          Account Settings
+        </h2>
+
+        <p className="mt-1 text-sm leading-6 text-zinc-500">
+          Manage your account and security preferences.
+        </p>
       </div>
 
-      <nav className="flex flex-col gap-6">
+      <nav aria-label="Account navigation" className="flex flex-col gap-7">
         {navigation.map((section) => (
           <div key={section.title} className="flex flex-col gap-2">
-            <h3 className="px-3 text-xs font-semibold tracking-wider text-muted-foreground">
+            <h3 className="px-3 text-xs font-semibold tracking-[0.15em] text-zinc-400">
               {section.title}
             </h3>
 
@@ -54,10 +63,10 @@ const AccountSidebar = () => {
                     key={item.href}
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
-                    className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                    className={`border-l-2 px-3 py-2.5 text-sm font-medium transition-colors ${
                       isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        ? "border-violet-700 bg-violet-50 text-violet-800"
+                        : "border-transparent text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950"
                     }`}
                   >
                     {item.label}

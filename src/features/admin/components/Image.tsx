@@ -56,22 +56,22 @@ const Image = ({ fallbackText, ...props }: ImageProps) => {
       {...others}
       style={{
         ...style,
-        ...(showPlaceholder
-          ? {
-              backgroundImage: `url(${buildSrc({
-                urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!,
-                src,
-                transformation: [
-                  {
-                    quality: 10,
-                    blur: 90,
-                  },
-                ],
-              })})`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }
-          : {}),
+        // ...(showPlaceholder
+        //   ? {
+        //       backgroundImage: `url(${buildSrc({
+        //         urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!,
+        //         src,
+        //         transformation: [
+        //           {
+        //             quality: 10,
+        //             blur: 90,
+        //           },
+        //         ],
+        //       })})`,
+        //       backgroundSize: "cover",
+        //       backgroundRepeat: "no-repeat",
+        //     }
+        //   : {}),
       }}
       onLoad={(event) => {
         setShowPlaceholder(false);

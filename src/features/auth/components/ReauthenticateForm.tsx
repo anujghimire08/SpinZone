@@ -37,19 +37,28 @@ const ReauthenticateForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-lg font-semibold">Verify your identity</h2>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-700">
+          Security Verification
+        </p>
 
-        <p className="text-sm text-muted-foreground">
+        <h2 className="text-lg font-semibold tracking-tight text-zinc-950">
+          Verify your identity
+        </h2>
+
+        <p className="text-sm leading-6 text-zinc-500">
           For security reasons, please confirm your password before managing
           your active sessions.
         </p>
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="reauth-email" className="text-sm font-medium">
-          Email
+        <label
+          htmlFor="reauth-email"
+          className="block text-sm font-medium text-zinc-700"
+        >
+          Email Address
         </label>
 
         <input
@@ -57,12 +66,15 @@ const ReauthenticateForm = ({
           type="email"
           value={email}
           disabled
-          className="w-full rounded-md border bg-muted px-3 py-2 text-sm"
+          className="w-full border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-500 outline-none disabled:cursor-not-allowed"
         />
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="reauth-password" className="text-sm font-medium">
+        <label
+          htmlFor="reauth-password"
+          className="block text-sm font-medium text-zinc-700"
+        >
           Password
         </label>
 
@@ -75,22 +87,25 @@ const ReauthenticateForm = ({
           autoComplete="current-password"
           required
           disabled={loading}
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+          className="w-full border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-950 placeholder:text-zinc-400 outline-none transition focus:border-violet-700 focus:ring-2 focus:ring-violet-700/10 disabled:cursor-not-allowed disabled:bg-zinc-50 disabled:opacity-60"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-destructive" role="alert">
+        <div
+          className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
           {error}
-        </p>
+        </div>
       )}
 
       <button
         type="submit"
         disabled={loading || !password.trim()}
-        className="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground disabled:opacity-50"
+        className="w-full cursor-pointer bg-violet-700 px-4 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Verifying..." : "Verify password"}
+        {loading ? "Verifying..." : "Verify Password"}
       </button>
     </form>
   );
