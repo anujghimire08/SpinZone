@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireAuth } from "@/lib/auth-guard";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { db } from "@/lib/prisma";
+import { getCurrentSession } from "@/lib/auth-guard";
 
 export async function requireAdmin() {
   const session = await requireAuth();
@@ -14,9 +14,7 @@ export async function requireAdmin() {
 }
 
 export async function authorizeAdminAction() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getCurrentSession();
 
   if (!session) {
     return {
@@ -38,12 +36,8 @@ export async function authorizeAdminAction() {
   };
 }
 
-import { db } from "@/lib/prisma";
-
 export async function authorizeCustomerAction() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getCurrentSession();
 
   if (!session) {
     return {
@@ -59,9 +53,27 @@ export async function authorizeCustomerAction() {
     };
   }
 
+  const userId = session.user.id;
+
+  if (!userId) {
+    console.error("Authenticated session has no user ID.");
+
+    return {
+      authorized: false as const,
+      error: "INVALID_SESSION" as const,
+    };
+  }
+
+  console.log("Customer authorization debug:", {
+    hasSession: !!session,
+    user: session?.user,
+    userId: session?.user?.id,
+    role: session?.user?.role,
+  });
+
   const customer = await db.customer.findUnique({
     where: {
-      user_id: session.user.id,
+      user_id: userId,
     },
     select: {
       id: true,

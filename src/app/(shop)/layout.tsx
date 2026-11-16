@@ -13,6 +13,7 @@ interface ShopLayoutProps {
 const ShopLayout = async ({ children, modal }: ShopLayoutProps) => {
   const session = await getCurrentSession();
   const user_id = session?.user.id;
+  if (!user_id) return;
   const customer = await db.customer.findUnique({
     where: {
       user_id,
@@ -23,6 +24,7 @@ const ShopLayout = async ({ children, modal }: ShopLayoutProps) => {
   });
 
   const customer_id = customer?.id;
+  if (!customer_id) return;
   const res = await db.cartItem.aggregate({
     where: {
       cart: {
