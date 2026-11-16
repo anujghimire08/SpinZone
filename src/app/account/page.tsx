@@ -1,5 +1,4 @@
 import Image from "@/features/admin/components/Image";
-import ImageUpload from "@/features/admin/components/image-upload";
 import SignoutButton from "@/features/auth/components/SignoutButton";
 import { requireAuth } from "@/lib/auth-guard";
 

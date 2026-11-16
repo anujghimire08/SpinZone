@@ -6,13 +6,14 @@ type AccountLayoutProps = {
 };
 
 const AccountLayout = async ({ children }: AccountLayoutProps) => {
-  await requireAuth();
+  const session = await requireAuth();
+  const isAdmin = session.user.role === "ADMIN";
 
   return (
     <main className="min-h-screen bg-zinc-50">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 sm:px-8 lg:flex-row lg:gap-10 lg:px-10">
         <aside className="w-full shrink-0 lg:w-64">
-          <AccountSidebar />
+          <AccountSidebar isAdmin={isAdmin} />
         </aside>
 
         <section className="min-w-0 flex-1 border border-zinc-200 bg-white p-5 sm:p-8">

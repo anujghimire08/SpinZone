@@ -24,11 +24,19 @@ const navigation = [
         label: "Sessions",
         href: "/account/sessions",
       },
+      {
+        label: "Password",
+        href: "/account/password",
+      },
     ],
   },
 ];
 
-const AccountSidebar = () => {
+type AccountSidebarProps = {
+  isAdmin: boolean;
+};
+
+const AccountSidebar = ({ isAdmin }: AccountSidebarProps) => {
   const pathname = usePathname();
 
   return (
@@ -76,6 +84,26 @@ const AccountSidebar = () => {
             </div>
           </div>
         ))}
+
+        {isAdmin && (
+          <div className="flex flex-col gap-2">
+            <h3 className="px-3 text-xs font-semibold tracking-[0.15em] text-zinc-400">
+              ADMINISTRATION
+            </h3>
+
+            <Link
+              href="/admin"
+              aria-current={pathname.startsWith("/admin") ? "page" : undefined}
+              className={`border-l-2 px-3 py-2.5 text-sm font-medium transition-colors ${
+                pathname.startsWith("/admin")
+                  ? "border-violet-700 bg-violet-50 text-violet-800"
+                  : "border-transparent text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950"
+              }`}
+            >
+              Admin Dashboard
+            </Link>
+          </div>
+        )}
       </nav>
     </aside>
   );

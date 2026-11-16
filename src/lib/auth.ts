@@ -175,5 +175,8 @@ export const auth = betterAuth({
       },
     },
   },
-  plugins: [nextCookies()],
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://spinzone.anujghimire.com.np",
+  ],
 });
