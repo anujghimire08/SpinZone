@@ -13,30 +13,36 @@ interface ShopLayoutProps {
 const ShopLayout = async ({ children, modal }: ShopLayoutProps) => {
   const session = await getCurrentSession();
   const user_id = session?.user.id;
-  if (!user_id) return;
-  const customer = await db.customer.findUnique({
-    where: {
-      user_id,
-    },
-    select: {
-      id: true,
-    },
-  });
 
-  const customer_id = customer?.id;
-  if (!customer_id) return;
-  const res = await db.cartItem.aggregate({
-    where: {
-      cart: {
-        customer_id,
+  // Guests can browse the store. Their cart count starts at zero.
+  let items = 0;
+
+  if (user_id) {
+    const customer = await db.customer.findUnique({
+      where: {
+        user_id,
       },
-    },
-    _sum: {
-      quantity: true,
-    },
-  });
+      select: {
+        id: true,
+      },
+    });
 
-  const items = res._sum.quantity ?? 0;
+    if (customer) {
+      const res = await db.cartItem.aggregate({
+        where: {
+          cart: {
+            customer_id: customer.id,
+          },
+        },
+        _sum: {
+          quantity: true,
+        },
+      });
+
+      items = res._sum.quantity ?? 0;
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#f7f7f5] text-zinc-950">
       <header className="sticky top-0 z-50 border-b border-zinc-200 bg-[#f7f7f5]">
