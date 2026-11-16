@@ -20,7 +20,7 @@ const CategorySection = async () => {
 
           <Link
             href="/categories"
-            className="text-sm font-semibold text-zinc-700 underline decoration-zinc-300 underline-offset-4 transition hover:text-violet-700 hover:decoration-violet-700"
+            className="text-sm hidden sm:block font-semibold text-zinc-700 underline decoration-zinc-300 underline-offset-4 transition hover:text-violet-700 hover:decoration-violet-700"
           >
             View all categories <span aria-hidden="true">↗</span>
           </Link>
@@ -64,6 +64,14 @@ const CategorySection = async () => {
             ))}
           </div>
         )}
+        <div className="mt-10 sm:hidden">
+          <Link
+            href="/categories"
+            className="block border border-zinc-300 py-3 text-center text-sm font-semibold text-zinc-900 transition hover:border-violet-700 hover:text-violet-700"
+          >
+            View all categories <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
