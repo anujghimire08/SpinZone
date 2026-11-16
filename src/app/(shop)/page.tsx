@@ -1,15 +1,15 @@
-import CategorySection from "@/features/storefront/components/category-section";
-import FeaturedProducts from "@/features/storefront/components/featured-products";
-import HeroSection from "@/features/storefront/components/hero-section";
-
-const HomePage = () => {
+export default function HomePage() {
   return (
-    <>
-      <HeroSection />
-      {/* <CategorySection /> */}
-      {/* <FeaturedProducts /> */}
-    </>
+    <main
+      style={{
+        background: "white",
+        color: "black",
+        minHeight: "100vh",
+        padding: "40px",
+      }}
+    >
+      <h1>SpinZone Test Page</h1>
+      <p>If you can see this, the homepage is rendering.</p>
+    </main>
   );
-};
-
-export default HomePage;
+}
