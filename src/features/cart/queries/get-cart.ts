@@ -90,6 +90,7 @@ export const getCart = async () => {
         items,
         totalItems,
         subtotal,
+        cart_id: cart.id,
       },
     };
   } catch (error) {

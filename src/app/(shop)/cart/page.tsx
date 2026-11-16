@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "@/features/admin/components/Image";
 import { getCart } from "@/features/cart/queries/get-cart";
+import CartItemActions from "@/features/storefront/components/CartItemActions";
 
 const CartPage = async () => {
   const result = await getCart();
@@ -26,7 +27,7 @@ const CartPage = async () => {
     );
   }
 
-  const { items, totalItems, subtotal } = result.data;
+  const { items, totalItems, subtotal, cart_id } = result.data;
 
   if (items.length === 0) {
     return (
@@ -111,8 +112,18 @@ const CartPage = async () => {
             return (
               <article
                 key={item.id}
-                className="border border-zinc-200 bg-white p-4 sm:p-5"
+                className="relative border border-zinc-200 bg-white p-4 pt-14 sm:p-5 sm:pt-14"
               >
+                <div className="absolute right-4 top-4 z-10 sm:right-5 sm:top-5">
+                  <CartItemActions
+                    cart_id={String(cart_id)}
+                    productId={item.productId}
+                    productName={item.name}
+                    quantity={item.quantity}
+                    availableStock={item.availableStock}
+                  />
+                </div>
+
                 <div className="flex flex-col gap-5 sm:flex-row">
                   <Link
                     href={`/products/${item.slug}`}
@@ -146,6 +157,7 @@ const CartPage = async () => {
                         <span className="font-semibold text-zinc-900">
                           Rs. {item.price.toFixed(2)}
                         </span>
+
                         <span className="ml-1">/ unit</span>
                       </p>
                     </div>

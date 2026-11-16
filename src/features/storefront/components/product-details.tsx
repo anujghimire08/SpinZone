@@ -14,7 +14,7 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
 
   return (
     <section className="mx-auto grid h-full max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 md:gap-8">
-      <div className="relative min-h-[220px] overflow-hidden bg-[#f0f0ed] md:min-h-0">
+      <div className="relative min-h-55 overflow-hidden bg-[#f0f0ed] md:min-h-0">
         <Image
           src={product.img}
           alt={product.name}

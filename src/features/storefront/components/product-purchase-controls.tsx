@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addToCart } from "@/features/cart/action/add-to-cart";
+import { useRouter } from "next/navigation";
 
 interface ProductPurchaseControlsProps {
   productId: string;
@@ -12,6 +13,7 @@ const ProductPurchaseControls = ({
   productId,
   stock,
 }: ProductPurchaseControlsProps) => {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [isPending, setIsPending] = useState(false);
   const [feedback, setFeedback] = useState<{
@@ -46,7 +48,7 @@ const ProductPurchaseControls = ({
 
         return;
       }
-
+      router.refresh();
       setFeedback({
         type: "success",
         message: result.message,

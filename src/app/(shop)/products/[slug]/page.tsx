@@ -34,7 +34,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
         <span
           aria-current="page"
-          className="max-w-[240px] truncate font-medium text-zinc-950"
+          className="max-w-60 truncate font-medium text-zinc-950"
         >
           {product.name}
         </span>
