@@ -8,6 +8,7 @@ export const PublicRoutes = [
   "/forgot-password",
   "/reset-password",
   "/products/*",
+  "/categories"
 ];
 
 export const isPublicRoute = (pathname: string) => {
